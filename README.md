@@ -78,5 +78,5 @@ export function webViewLoaded(args: observable.EventData) {
 }
 ```
 
-## Future work
-* Ideas are welcome, just open an issue or PR :)
+## Credits
+Quite some code was borrowed from [this repo](https://github.com/okmttdhr/nativescript-webview-custom-header).
