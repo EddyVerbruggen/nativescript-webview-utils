@@ -13,6 +13,8 @@
 [twitter-image]:https://img.shields.io/twitter/follow/eddyverbruggen.svg?style=social&label=Follow%20me
 [twitter-url]:https://twitter.com/eddyverbruggen
 
+<img src="https://raw.githubusercontent.com/EddyVerbruggen/nativescript-webview-utils/master/media/ios-headers.png" width="300px"/>
+
 ## Installation
 From the command prompt go to your app's root folder and execute:
 
@@ -25,13 +27,11 @@ tns plugin add nativescript-webview-utils
 ### Demo app (XML + TypeScript)
 You can run the demo app from the root of the project by typing `npm run demo.ios` or `npm run demo.android`.
 
-<img border="1" style="border: 1px solid #999" src="https://raw.githubusercontent.com/EddyVerbruggen/nativescript-webview-utils/master/media/ios-headers.png" width="375px" height="690px"/>
-
 ## API
 
 ### `addHeaders`
 If you're loading a page that requires you to send additional headers (for security perhaps),
-this plugin allows you to dynamically inject those to any links within the webview.
+this function allows you to dynamically inject those to any links within the webview.
 
 #### NativeScript with Angular
 
