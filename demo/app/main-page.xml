@@ -6,7 +6,7 @@
       <WebView height="340" src="https://httpbin.org/headers"/>
 
       <Label text="And now with custom headers:" class="t-20 text-center c-black" textWrap="true"/>
-      <WebView id="webviewWithCustomHeaders" loaded="webViewLoaded" height="360" src="https://httpbin.org/headers"/>
+      <WebView id="webviewWithCustomHeaders" loaded="webViewLoaded" height="400" src="https://httpbin.org/headers"/>
 
     </StackLayout>
   </ScrollView>

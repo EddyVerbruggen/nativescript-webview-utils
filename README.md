@@ -25,7 +25,7 @@ tns plugin add nativescript-webview-utils
 ### Demo app (XML + TypeScript)
 You can run the demo app from the root of the project by typing `npm run demo.ios` or `npm run demo.android`.
 
-<img src="https://raw.githubusercontent.com/EddyVerbruggen/nativescript-webview-utils/master/media/ios-headers.png" width="375px" height="690px"/>
+<img border="1" style="border: 1px solid #999" src="https://raw.githubusercontent.com/EddyVerbruggen/nativescript-webview-utils/master/media/ios-headers.png" width="375px" height="690px"/>
 
 ## API
 
@@ -33,8 +33,33 @@ You can run the demo app from the root of the project by typing `npm run demo.io
 If you're loading a page that requires you to send additional headers (for security perhaps),
 this plugin allows you to dynamically inject those to any links within the webview.
 
+#### NativeScript with Angular
+
+```html
+<WebView [src]="someSource" (loaded)="webViewLoaded($event)"></WebView>
+```
+
+```typescript
+import { EventData } from "tns-core-modules/data/observable";
+import { WebView } from "tns-core-modules/ui/web-view";
+import { WebViewUtils } from "nativescript-webview-utils";
+
+export class MyComponent {
+  someSource: string = "https://httpbin.org/headers";
+
+  webViewLoaded(args: EventData): any {
+    const webView: WebView = <WebView>args.object;
+    const headers: Map<string, string> = new Map();
+    headers.set("Foo", "Bar :P");
+    headers.set("X-Custom-Header", "Set at " + new Date().toTimeString());
+    WebViewUtils.addHeaders(webView, headers);
+  }
+}
+```
+
+#### NativeScript with XML
+
 ```xml
-<!-- assuming you have this WebView in your XML file -->
 <WebView id="webviewWithCustomHeaders" loaded="webViewLoaded" height="360" src="https://httpbin.org/headers"/>
 ```
 

@@ -31,28 +31,26 @@ export class WebViewUtils extends android.webkit.WebViewClient {
 
   // Note that this method is overloaded in Java (changed in Lollipop)
   public shouldOverrideUrlLoading(view: android.webkit.WebView, urlOrWebResourceRequest: any /* string | android.webkit.WebResourceRequest */): boolean {
-    const addedHeaders: java.util.Map<String, String> = new java.util.HashMap<String, String>();
-
-    WebViewUtils.headers.forEach((val, key) => {
-      addedHeaders.put(key, val);
-    });
-
-    (<any>view).loadUrl(typeof urlOrWebResourceRequest === "string" ? urlOrWebResourceRequest : urlOrWebResourceRequest.getUrl().toString(), addedHeaders);
+    const url = typeof urlOrWebResourceRequest === "string" ? urlOrWebResourceRequest : urlOrWebResourceRequest.getUrl().toString();
+    (<any>view).loadUrl(url, this.getAdditionalHeadersForUrl(url));
     return true;
   }
 
   public onPageStarted(view: android.webkit.WebView, url: string, favicon: android.graphics.Bitmap): void {
     super.onPageStarted(view, url, favicon);
-
     if (this._view && url.indexOf("http") === 0 && !this.headersAddedTo.has(url)) {
-      this.headersAddedTo.add(url);
-
-      const addedHeaders: java.util.Map<String, String> = new java.util.HashMap<String, String>();
-      WebViewUtils.headers.forEach((val, key) => {
-        addedHeaders.put(key, val);
-      });
-
-      this._view.android.loadUrl(url, addedHeaders);
+      this._view.android.loadUrl(url, this.getAdditionalHeadersForUrl(url));
     }
+  }
+
+  private getAdditionalHeadersForUrl(url: string): java.util.Map<String, String> {
+    const headers: java.util.Map<String, String> = new java.util.HashMap();
+    if (!this.headersAddedTo.has(url)) {
+      WebViewUtils.headers.forEach((val, key) => {
+        headers.put(key, val);
+      });
+      this.headersAddedTo.add(url);
+    }
+    return headers;
   }
 }
