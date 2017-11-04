@@ -1,0 +1,13 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" loaded="pageLoaded" class="page">
+  <ScrollView>
+    <StackLayout class="p-20">
+
+      <Label text="Default headers, according to https://httpbin.org/headers:" class="t-20 text-center c-black" textWrap="true"/>
+      <WebView height="340" src="https://httpbin.org/headers"/>
+
+      <Label text="And now with custom headers:" class="t-20 text-center c-black" textWrap="true"/>
+      <WebView id="webviewWithCustomHeaders" loaded="webViewLoaded" height="360" src="https://httpbin.org/headers"/>
+
+    </StackLayout>
+  </ScrollView>
+</Page>
