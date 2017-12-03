@@ -27,7 +27,7 @@ tns plugin add nativescript-webview-utils
 ## Usage
 
 ### Demo app (XML + TypeScript)
-You can run the demo app from the root of the project by typing `npm run demo.ios` or `npm run demo.android`.
+You can run [the demo app](https://github.com/EddyVerbruggen/nativescript-webview-utils/tree/master/demo) from the root of the project by typing `npm run demo.ios` or `npm run demo.android`.
 
 ## API
 
