@@ -9,6 +9,10 @@ export class WebViewUtils extends android.webkit.WebViewClient {
   private _view: any;
   private _origClient: any; // WebViewClient
 
+  public static setUserAgent(wv: WebView, userAgent: string) {
+    wv.android.getSettings().setUserAgentString(userAgent);
+  }
+
   public static addHeaders(wv: WebView, headers: Map<string, string>) {
     WebViewUtils.headers = headers;
     // Wrap this in a timeout for Android, otherwise webview.android might not be initialized

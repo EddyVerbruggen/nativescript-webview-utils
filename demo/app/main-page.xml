@@ -8,6 +8,9 @@
       <Label text="And now with custom headers:" class="t-20 text-center c-black" textWrap="true"/>
       <WebView id="webviewWithCustomHeaders" loaded="webViewLoaded" height="400" src="https://httpbin.org/headers"/>
 
+      <Label text="Set custom User Agent (on iOS this affects ALL webviews of your app)" class="t-20 text-center c-black" textWrap="true"/>
+      <WebView id="webViewForUserAgent" loaded="webViewForUserAgentLoaded" height="400" src="https://httpbin.org/headers"/>
+
     </StackLayout>
   </ScrollView>
 </Page>

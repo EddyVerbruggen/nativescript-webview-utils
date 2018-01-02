@@ -24,3 +24,8 @@ export function webViewLoaded(args: observable.EventData) {
   headers.set("X-Custom-Header", "Set at " + new Date().toTimeString());
   WebViewUtils.addHeaders(wv, headers);
 }
+
+export function webViewForUserAgentLoaded(args: observable.EventData) {
+  const wv: WebView = <WebView>args.object;
+  WebViewUtils.setUserAgent(wv, "My Super Duper User-Agent!");
+}

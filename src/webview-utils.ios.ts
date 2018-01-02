@@ -10,6 +10,12 @@ export class WebViewUtils extends NSObject implements UIWebViewDelegate {
   private _owner: WeakRef<WebView>;
   private _originalDelegate: any; // UIWebViewDelegateImpl
 
+  public static setUserAgent(wv: WebView, userAgent: string) {
+    // note that overrides the useragent for ALL webviews for the app, but that's prolly not a problem
+    NSUserDefaults.standardUserDefaults.registerDefaults(
+        NSDictionary.dictionaryWithObjectForKey(userAgent, "UserAgent"));
+  }
+
   public static addHeaders(wv: WebView, headers: Map<string, string>) {
     (<any>wv)._delegate = WebViewUtils.initWithOwner(new WeakRef(wv));
     WebViewUtils.headers = headers;
@@ -22,6 +28,7 @@ export class WebViewUtils extends NSObject implements UIWebViewDelegate {
     return delegate;
   }
 
+  // TODO this is prolly different for WKWebView
   // You can customize your http headers here.
   public webViewShouldStartLoadWithRequestNavigationType(webView: UIWebView, request: NSURLRequest, navigationType: number) {
     const urlString: string = request.URL.absoluteString;

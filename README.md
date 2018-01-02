@@ -80,5 +80,22 @@ export function webViewLoaded(args: observable.EventData) {
 }
 ```
 
+### `setUserAgent`
+You can set this as a header, but it seems to work better setting it in a different way,
+so use this function if you want to override the user agent in your webview.
+
+Note that on iOS this will override the user agent header in all of your webviews.
+
+```typescript
+import { WebViewUtils } from 'nativescript-webview-utils';
+import { WebView } from 'tns-core-modules/ui/web-view';
+import * as observable from 'tns-core-modules/data/observable';
+
+export function webViewForUserAgentLoaded(args: observable.EventData) {
+  const wv: WebView = <WebView>args.object;
+  WebViewUtils.setUserAgent(wv, "My Super Duper User-Agent!");
+}
+```
+
 ## Credits
 Quite some code was borrowed from [this repo](https://github.com/okmttdhr/nativescript-webview-custom-header).
