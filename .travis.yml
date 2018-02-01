@@ -8,8 +8,9 @@ matrix:
     - stage: "WebPack"
       os: osx
       env:
-        - Platform="iOS"
-      osx_image: xcode8.3
+        - BuildiOS="11"
+        - Xcode="9"
+      osx_image: xcode9
       language: node_js 
       node_js: "6"
       jdk: oraclejdk8
@@ -23,7 +24,7 @@ matrix:
       script: cd demo && npm run build.plugin && npm i && npm run build-android-bundle
     - stage: "Build and Test"
       env: 
-        - BuildAndroid="25"
+        - BuildAndroid="26"
       language: android
       os: linux
       jdk: oraclejdk8
@@ -31,10 +32,10 @@ matrix:
       script:
         - cd src && npm i && npm run tsc && cd ../demo && tns build android
     - os: osx
-      env: 
-        - BuildiOS="10.3"
-        - Xcode="8.3"
-      osx_image: xcode8.3
+      env:
+        - BuildiOS="11"
+        - Xcode="9"
+      osx_image: xcode9
       language: node_js 
       node_js: "6"
       jdk: oraclejdk8
@@ -56,15 +57,15 @@ matrix:
       language: node_js
       node_js: "6"
       jdk: oraclejdk8
-      osx_image: xcode8.3
+      osx_image: xcode9
       script: cd src && npm run test.ios
 
 android:
   components:
     - tools
     - platform-tools
-    - build-tools-25.0.2
-    - android-25
+    - build-tools-26.0.1
+    - android-26
     - extra-android-m2repository
     - sys-img-armeabi-v7a-android-21
 
