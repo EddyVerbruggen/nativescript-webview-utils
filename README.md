@@ -1,4 +1,5 @@
 # NativeScript WebView Utils plugin
+Add request headers to a NativeScript WebView. Perhaps more utils later.
 
 [![Build Status][build-status]][build-url]
 [![NPM version][npm-image]][npm-url]
@@ -13,7 +14,7 @@
 [twitter-image]:https://img.shields.io/twitter/follow/eddyverbruggen.svg?style=social&label=Follow%20me
 [twitter-url]:https://twitter.com/eddyverbruggen
 
-> Add request headers to a NativeScript WebView. Perhaps more utils later.
+> IMPORTANT: the current version works with `tns-ios` versions prior to 3.4 (which uses `UIWebView`). Newer versions of `tns-ios` use `WKWebView`. I have an update in the works though! 
 
 <img src="https://raw.githubusercontent.com/EddyVerbruggen/nativescript-webview-utils/master/media/ios-headers.png" width="300px"/>
 
