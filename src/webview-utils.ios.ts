@@ -17,12 +17,14 @@ class WebviewUtilsWKNavigationDelegateImpl extends NSObject implements WKNavigat
       return;
     }
 
+    const isHttpRequest = navigationAction.request.URL.absoluteString.indexOf("http") === 0;
+
     let areHeadersAdded = true;
     this.headers.forEach((val, key) => {
       areHeadersAdded = areHeadersAdded && navigationAction.request.valueForHTTPHeaderField(key) === val;
     });
 
-    if (!areHeadersAdded) {
+    if (isHttpRequest && !areHeadersAdded) {
       decisionHandler(WKNavigationActionPolicy.Cancel);
       const customRequest = new NSMutableURLRequest({
         URL: navigationAction.request.URL,
