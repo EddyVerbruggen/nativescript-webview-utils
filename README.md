@@ -14,7 +14,7 @@ Add request headers to a NativeScript WebView. Perhaps more utils later.
 [twitter-image]:https://img.shields.io/twitter/follow/eddyverbruggen.svg?style=social&label=Follow%20me
 [twitter-url]:https://twitter.com/eddyverbruggen
 
-> IMPORTANT: the current version works with `tns-ios` versions prior to 3.4 (which uses `UIWebView`). Newer versions of `tns-ios` use `WKWebView`. I have an update in the works though! 
+> Version 1.2.0 supports NativeScript-iOS 3.4 🎉 which switched from `UIWebView` to `WKWebView`. It's also backward compatible with older versions. You're welcome.
 
 <img src="https://raw.githubusercontent.com/EddyVerbruggen/nativescript-webview-utils/master/media/ios-headers.png" width="300px"/>
 
@@ -85,7 +85,7 @@ export function webViewLoaded(args: observable.EventData) {
 You can set this as a header, but it seems to work better setting it in a different way,
 so use this function if you want to override the user agent in your webview.
 
-Note that on iOS this will override the user agent header in all of your webviews.
+> Note for NativeScript-iOS versions older than 3.4: this will override the user agent header in *all* of your webviews within your app. This is usually not an issue, but if it is: upgrade to `tns-ios` 3.4 or newer.
 
 ```typescript
 import { WebViewUtils } from 'nativescript-webview-utils';

@@ -1,6 +1,6 @@
 {
   "name": "nativescript-webview-utils",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Add custom headers to a NativeScript WebView. Perhaps more utils later.",
   "main": "webview-utils",
   "typings": "index.d.ts",
@@ -19,7 +19,7 @@
     "tslint": "cd .. && tslint \"**/*.ts\" --config tslint.json --exclude \"**/node_modules/**\"",
     "plugin.link": "npm link && cd ../demo && npm link nativescript-webview-utils && cd ../src",
     "plugin.tscwatch": "npm run tsc -- -w",
-    "demo.ios": "npm i && npm run tsc && cd ../demo && tns run ios",
+    "demo.ios": "npm i && npm run tsc && cd ../demo && tns run ios --syncAllFiles",
     "demo.android": "npm i && npm run tsc && cd ../demo && tns run android --syncAllFiles",
     "demo.reset": "cd ../demo && rimraf platforms",
     "plugin.prepare": "npm run tsc && cd ../demo && tns plugin remove nativescript-webview-utils && tns plugin add ../src",
@@ -47,9 +47,9 @@
   "homepage": "https://github.com/EddyVerbruggen/nativescript-webview-utils",
   "readmeFilename": "README.md",
   "devDependencies": {
-    "tns-core-modules": "^3.3.0",
-    "tns-platform-declarations": "^3.3.0",
-    "typescript": "~2.4.0",
+    "tns-core-modules": "~3.4.0",
+    "tns-platform-declarations": "~3.4.0",
+    "typescript": "~2.6.0",
     "prompt": "^1.0.0",
     "rimraf": "^2.5.0",
     "tslint": "^5.0.0"
