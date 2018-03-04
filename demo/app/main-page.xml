@@ -3,13 +3,13 @@
     <StackLayout class="p-20">
 
       <Label text="Default headers, according to https://httpbin.org/headers:" class="t-20 text-center c-black" textWrap="true"/>
-      <WebView height="320" src="https://httpbin.org/headers"/>
+      <WebView height="320" src="https://httpbin.org/headers?wv=1"/>
 
       <Label text="And now with custom headers:" class="t-20 text-center c-black" textWrap="true"/>
-      <WebView loaded="webViewLoaded" height="370" src="https://httpbin.org/headers"/>
+      <WebView loaded="webViewLoaded" loadStarted="webViewLoadStarted" loadFinished="webViewLoadFinished" height="370" src="https://httpbin.org/headers?wv=2"/>
 
       <Label text="Set custom User Agent (on iOS this affects ALL webviews of your app)" class="t-20 text-center c-black" textWrap="true"/>
-      <WebView loaded="webViewForUserAgentLoaded" height="320" src="https://httpbin.org/headers"/>
+      <WebView loaded="webViewForUserAgentLoaded" height="320" src="https://httpbin.org/headers?wv=3"/>
 
     </StackLayout>
   </ScrollView>

@@ -1,4 +1,5 @@
-import { WebView } from "tns-core-modules/ui/web-view";
+import { NavigationType, WebView } from "tns-core-modules/ui/web-view";
+import { onLoadFinished, onLoadStarted } from "./webview-utils-common";
 
 class WebviewUtilsWKNavigationDelegateImpl extends NSObject implements WKNavigationDelegate {
   private headers: Map<string, string>;
@@ -13,7 +14,8 @@ class WebviewUtilsWKNavigationDelegateImpl extends NSObject implements WKNavigat
   private _owner: WeakRef<WebView>;
 
   webViewDecidePolicyForNavigationActionDecisionHandler(webView: WKWebView, navigationAction: WKNavigationAction, decisionHandler: (p1: WKNavigationActionPolicy) => void): void {
-    if (!navigationAction.request.URL) {
+    const owner = this._owner.get();
+    if (!owner || !navigationAction.request.URL) {
       return;
     }
 
@@ -43,6 +45,49 @@ class WebviewUtilsWKNavigationDelegateImpl extends NSObject implements WKNavigat
       webView.loadRequest(customRequest);
     } else {
       decisionHandler(WKNavigationActionPolicy.Allow);
+
+      let navType: NavigationType = "other";
+
+      switch (navigationAction.navigationType) {
+        case WKNavigationType.LinkActivated:
+          navType = "linkClicked";
+          break;
+        case WKNavigationType.FormSubmitted:
+          navType = "formSubmitted";
+          break;
+        case WKNavigationType.BackForward:
+          navType = "backForward";
+          break;
+        case WKNavigationType.Reload:
+          navType = "reload";
+          break;
+        case WKNavigationType.FormResubmitted:
+          navType = "formResubmitted";
+          break;
+      }
+      onLoadStarted(owner, navigationAction.request.URL.absoluteString, navType);
+    }
+  }
+
+  public webViewDidFinishNavigation(webView: WKWebView, navigation: WKNavigation): void {
+    const owner = this._owner.get();
+    if (owner) {
+      let src = owner.src;
+      if (webView.URL) {
+        src = webView.URL.absoluteString;
+      }
+      onLoadFinished(owner, src);
+    }
+  }
+
+  public webViewDidFailNavigationWithError(webView: WKWebView, navigation: WKNavigation, error: NSError): void {
+    const owner = this._owner.get();
+    if (owner) {
+      let src = owner.src;
+      if (webView.URL) {
+        src = webView.URL.absoluteString;
+      }
+      onLoadFinished(owner, src, error.localizedDescription);
     }
   }
 }

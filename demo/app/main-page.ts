@@ -29,3 +29,13 @@ export function webViewForUserAgentLoaded(args: observable.EventData) {
   const wv: WebView = <WebView>args.object;
   WebViewUtils.setUserAgent(wv, "My Super Duper User-Agent!");
 }
+
+export function webViewLoadStarted(args: any) {
+  const wv: WebView = <WebView>args.object;
+  console.log(`>>>>>>>> webViewLoadStarted, navigationType for url: ${args.url} = ${args.navigationType}`);
+}
+
+export function webViewLoadFinished(args: any) {
+  const wv: WebView = <WebView>args.object;
+  console.log(`>>>>>>>> webViewLoadFinished, url: ${args.url}`);
+}
