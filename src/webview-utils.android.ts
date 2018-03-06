@@ -17,10 +17,14 @@ export class WebViewUtils extends android.webkit.WebViewClient {
   public static addHeaders(wv: WebView, headers: Map<string, string>) {
     WebViewUtils.wv = wv;
     WebViewUtils.headers = headers;
-    // Wrap this in a timeout for Android, otherwise webview.android might not be initialized
-    setTimeout(() => {
+    // Conditionally wrap this in a timeout for Android, otherwise webview.android might not be initialized
+    if ((<any>wv).android) {
       (<any>wv).android.setWebViewClient(WebViewUtils.initWithView(wv));
-    });
+    } else {
+      setTimeout(() => {
+        (<any>wv).android.setWebViewClient(WebViewUtils.initWithView(wv));
+      });
+    }
   }
 
   private static initWithView(view: WebView): WebViewUtils {
@@ -38,7 +42,7 @@ export class WebViewUtils extends android.webkit.WebViewClient {
   // Note that this method is overloaded in Java (changed in Lollipop - no longer used, from the looks of it)
   public shouldOverrideUrlLoading(webView: android.webkit.WebView, urlOrWebResourceRequest: any /* string | android.webkit.WebResourceRequest */): boolean {
     const url = typeof urlOrWebResourceRequest === "string" ? urlOrWebResourceRequest : urlOrWebResourceRequest.getUrl().toString();
-    (<any>webView).loadUrl(url, this.getAdditionalHeadersForUrl(webView, url));
+    (<any>webView).loadUrl(url, this.getAdditionalHeadersForUrl(url));
     return true;
   }
 
@@ -47,9 +51,9 @@ export class WebViewUtils extends android.webkit.WebViewClient {
     const headersAdded = this.headersAddedTo.has(url);
     if (url.indexOf("http") === 0 && !headersAdded) {
       ++this.startEventCount;
-      webView.loadUrl(url, this.getAdditionalHeadersForUrl(webView, url));
+      this._view.android.loadUrl(url, this.getAdditionalHeadersForUrl(url));
     } else if (headersAdded && WebViewUtils.wv && url.indexOf("http") === 0) {
-      if (++this.startEventCount === 3) {
+      if (++this.startEventCount === 2) {
         onLoadStarted(WebViewUtils.wv, url, undefined);
       }
     }
@@ -60,7 +64,7 @@ export class WebViewUtils extends android.webkit.WebViewClient {
     if (url.indexOf("http") === -1) {
       return;
     }
-    if (WebViewUtils.wv && this.startEventCount === 3) {
+    if (WebViewUtils.wv && this.startEventCount > 1) {
       onLoadFinished(WebViewUtils.wv, url, undefined);
     }
   }
@@ -90,13 +94,13 @@ export class WebViewUtils extends android.webkit.WebViewClient {
     }
   }
 
-  private getAdditionalHeadersForUrl(webView: android.webkit.WebView, url: string): java.util.Map<String, String> {
+  private getAdditionalHeadersForUrl(url: string): java.util.Map<String, String> {
     const headers: java.util.Map<String, String> = new java.util.HashMap();
     if (!this.headersAddedTo.has(url)) {
       WebViewUtils.headers.forEach((val, key) => {
         headers.put(key, val);
         if (key.toLowerCase() === "user-agent") {
-          webView.getSettings().setUserAgentString(val);
+          this._view.android.getSettings().setUserAgentString(val);
         }
       });
       this.headersAddedTo.add(url);

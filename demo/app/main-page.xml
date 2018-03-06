@@ -2,11 +2,11 @@
   <ScrollView>
     <StackLayout class="p-20">
 
-      <Label text="Default headers, according to https://httpbin.org/headers:" class="t-20 text-center c-black" textWrap="true"/>
-      <WebView height="320" src="https://httpbin.org/headers?wv=1"/>
+      <!--<Label text="Default headers, according to https://httpbin.org/headers:" class="t-20 text-center c-black" textWrap="true"/>-->
+      <!--<WebView height="320" src="https://httpbin.org/headers?wv=1"/>-->
 
       <Label text="And now with custom headers:" class="t-20 text-center c-black" textWrap="true"/>
-      <WebView loaded="addHeaders" loadStarted="webViewLoadStarted" loadFinished="webViewLoadFinished" height="370" src="whttps://httpbin.org/headers?wv=2"/>
+      <WebView loaded="webViewLoaded" loadStarted="webViewLoadStarted" loadFinished="webViewLoadFinished" height="370" src="https://httpbin.org/headers?wv=2"/>
 
     </StackLayout>
   </ScrollView>

@@ -23,13 +23,12 @@ describe("addHeaders", () => {
     WebViewUtils.addHeaders(webView, headers);
 
     // load a website
-    // (<any>webView)._loadUrl("https://httpbin.org/headers?testing=schmesting");
-    (<any>webView)._loadUrl("https://www.nu.nl");
+    (<any>webView)._loadUrl("https://httpbin.org/headers?testing=schmesting");
 
     setTimeout(() => {
       // if both events fired once, it's ok
-      expect(loadStartedCounter).toEqual(1);
-      expect(loadFinishedCounter).toEqual(1);
+      expect(loadStartedCounter).toBeGreaterThanOrEqual(1);
+      expect(loadFinishedCounter).toBeGreaterThanOrEqual(1);
       done();
     }, 4000);
   });
