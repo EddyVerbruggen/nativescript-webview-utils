@@ -20,14 +20,10 @@ export function webViewLoaded(args: observable.EventData) {
   }
 
   const headers: Map<string, string> = new Map();
-  headers.set("Foo", "Bar :P");
+  headers.set("appname", "Bar :P");
   headers.set("X-Custom-Header", "Set at " + new Date().toTimeString());
+  headers.set("User-Agent", "My Awesome User-Agent!");
   WebViewUtils.addHeaders(wv, headers);
-}
-
-export function webViewForUserAgentLoaded(args: observable.EventData) {
-  const wv: WebView = <WebView>args.object;
-  WebViewUtils.setUserAgent(wv, "My Super Duper User-Agent!");
 }
 
 export function webViewLoadStarted(args: any) {

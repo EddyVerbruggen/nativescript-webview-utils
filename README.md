@@ -82,10 +82,9 @@ export function webViewLoaded(args: observable.EventData) {
 ```
 
 ### `setUserAgent`
-You can set this as a header, but it seems to work better setting it in a different way,
-so use this function if you want to override the user agent in your webview.
+This method was removed in 2.0.0 because it caused bugs when `addHeaders` was used as well.
 
-> Note for NativeScript-iOS versions older than 3.4: this will override the user agent header in *all* of your webviews within your app. This is usually not an issue, but if it is: upgrade to `tns-ios` 3.4 or newer.
+You should now use `addHeaders` and set the `User-Agent` header:
 
 ```typescript
 import { WebViewUtils } from 'nativescript-webview-utils';
@@ -94,7 +93,9 @@ import * as observable from 'tns-core-modules/data/observable';
 
 export function webViewForUserAgentLoaded(args: observable.EventData) {
   const wv: WebView = <WebView>args.object;
-  WebViewUtils.setUserAgent(wv, "My Super Duper User-Agent!");
+  const headers: Map<string, string> = new Map();
+  headers.set("User-Agent", "My Awesome User-Agent!"); // this line!
+  WebViewUtils.addHeaders(wv, headers);
 }
 ```
 

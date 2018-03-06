@@ -26,7 +26,12 @@ class WebviewUtilsWKNavigationDelegateImpl extends NSObject implements WKNavigat
       areHeadersAdded = areHeadersAdded && navigationAction.request.valueForHTTPHeaderField(key) === val;
     });
 
-    if (isHttpRequest && !areHeadersAdded) {
+    if (!isHttpRequest) {
+      decisionHandler(WKNavigationActionPolicy.Allow);
+      return;
+    }
+
+    if (!areHeadersAdded) {
       decisionHandler(WKNavigationActionPolicy.Cancel);
       const customRequest = new NSMutableURLRequest({
         URL: navigationAction.request.URL,
@@ -35,10 +40,10 @@ class WebviewUtilsWKNavigationDelegateImpl extends NSObject implements WKNavigat
       });
 
       this.headers.forEach((val, key) => {
+        customRequest.setValueForHTTPHeaderField(val, key);
+        // the user agent is set as header, but also set this property:
         if (key.toLowerCase() === "user-agent") {
           webView.customUserAgent = val;
-        } else {
-          customRequest.setValueForHTTPHeaderField(val, key);
         }
       });
 
@@ -102,18 +107,6 @@ export class WebViewUtils extends NSObject implements UIWebViewDelegate {
   private _owner: WeakRef<WebView>;
   private _originalDelegate: any; // UIWebViewDelegateImpl
 
-  public static setUserAgent(wv: WebView, userAgent: string) {
-    if (WebViewUtils.isWKWebView(wv)) {
-      const headers: Map<string, string> = new Map();
-      headers.set("User-Agent", userAgent);
-      (<WKWebView>wv.ios).navigationDelegate = (<any>wv)._delegate = WebviewUtilsWKNavigationDelegateImpl.initWithOwnerAndHeaders(new WeakRef(wv), headers);
-    } else {
-      // note that this overrides the useragent for ALL webviews for the app, but that's prolly not a problem
-      NSUserDefaults.standardUserDefaults.registerDefaults(
-          NSDictionary.dictionaryWithObjectForKey(userAgent, "UserAgent"));
-    }
-  }
-
   public static addHeaders(wv: WebView, headers: Map<string, string>) {
     if (WebViewUtils.isWKWebView(wv)) {
       (<WKWebView>wv.ios).navigationDelegate = (<any>wv)._delegate = WebviewUtilsWKNavigationDelegateImpl.initWithOwnerAndHeaders(new WeakRef(wv), headers);
@@ -162,6 +155,11 @@ export class WebViewUtils extends NSObject implements UIWebViewDelegate {
 
     WebViewUtils.headers.forEach((val, key) => {
       nsMutableURLRequest.setValueForHTTPHeaderField(val, key);
+      if (key.toLowerCase() === "user-agent") {
+        // note that this overrides the useragent for ALL webviews for the app, but that's prolly not a problem
+        NSUserDefaults.standardUserDefaults.registerDefaults(
+            NSDictionary.dictionaryWithObjectForKey(val, "UserAgent"));
+      }
     });
 
     webView.loadRequest(nsMutableURLRequest);

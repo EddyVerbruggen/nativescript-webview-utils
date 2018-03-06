@@ -1,5 +1,5 @@
 import { WebView } from "tns-core-modules/ui/web-view";
-import { onLoadStarted, onLoadFinished } from "./webview-utils-common";
+import { onLoadFinished, onLoadStarted } from "./webview-utils-common";
 
 export class WebViewUtils extends android.webkit.WebViewClient {
   // Note that using a static property limits usage of multiple webviews on one page with different headers,
@@ -8,15 +8,11 @@ export class WebViewUtils extends android.webkit.WebViewClient {
   private static wv: WebView;
   private headersAddedTo: Set<string> = new Set<string>();
 
-  // hackilish flag to make sure we don't fire the onLoadFinished event twice
-  private isFirstLoad = true;
+  // hackilish flag to make sure we don't fire the onLoadFinished event multiple times
+  private startEventCount = 0;
 
   private _view: any;
   private _origClient: any; // WebViewClient
-
-  public static setUserAgent(wv: WebView, userAgent: string) {
-    wv.android.getSettings().setUserAgentString(userAgent);
-  }
 
   public static addHeaders(wv: WebView, headers: Map<string, string>) {
     WebViewUtils.wv = wv;
@@ -39,31 +35,33 @@ export class WebViewUtils extends android.webkit.WebViewClient {
     return global.__native(this);
   }
 
-  // Note that this method is overloaded in Java (changed in Lollipop)
-  public shouldOverrideUrlLoading(view: android.webkit.WebView, urlOrWebResourceRequest: any /* string | android.webkit.WebResourceRequest */): boolean {
+  // Note that this method is overloaded in Java (changed in Lollipop - no longer used, from the looks of it)
+  public shouldOverrideUrlLoading(webView: android.webkit.WebView, urlOrWebResourceRequest: any /* string | android.webkit.WebResourceRequest */): boolean {
     const url = typeof urlOrWebResourceRequest === "string" ? urlOrWebResourceRequest : urlOrWebResourceRequest.getUrl().toString();
-    (<any>view).loadUrl(url, this.getAdditionalHeadersForUrl(url));
+    (<any>webView).loadUrl(url, this.getAdditionalHeadersForUrl(webView, url));
     return true;
   }
 
-  public onPageStarted(view: android.webkit.WebView, url: string, favicon: android.graphics.Bitmap): void {
-    super.onPageStarted(view, url, favicon);
+  public onPageStarted(webView: any, url: string, favicon: android.graphics.Bitmap): void {
+    super.onPageStarted(webView, url, favicon);
     const headersAdded = this.headersAddedTo.has(url);
-    if (this._view && url.indexOf("http") === 0 && !headersAdded) {
-      this._view.android.loadUrl(url, this.getAdditionalHeadersForUrl(url));
-    }
-    if (headersAdded && WebViewUtils.wv) {
-      onLoadStarted(WebViewUtils.wv, url, undefined);
+    if (url.indexOf("http") === 0 && !headersAdded) {
+      ++this.startEventCount;
+      webView.loadUrl(url, this.getAdditionalHeadersForUrl(webView, url));
+    } else if (headersAdded && WebViewUtils.wv && url.indexOf("http") === 0) {
+      if (++this.startEventCount === 3) {
+        onLoadStarted(WebViewUtils.wv, url, undefined);
+      }
     }
   }
 
   public onPageFinished(view: android.webkit.WebView, url: string) {
     super.onPageFinished(view, url);
-    if (!this.isFirstLoad && WebViewUtils.wv) {
+    if (url.indexOf("http") === -1) {
+      return;
+    }
+    if (WebViewUtils.wv && this.startEventCount === 3) {
       onLoadFinished(WebViewUtils.wv, url, undefined);
-      this.isFirstLoad = true;
-    } else {
-      this.isFirstLoad = false;
     }
   }
 
@@ -92,11 +90,14 @@ export class WebViewUtils extends android.webkit.WebViewClient {
     }
   }
 
-  private getAdditionalHeadersForUrl(url: string): java.util.Map<String, String> {
+  private getAdditionalHeadersForUrl(webView: android.webkit.WebView, url: string): java.util.Map<String, String> {
     const headers: java.util.Map<String, String> = new java.util.HashMap();
     if (!this.headersAddedTo.has(url)) {
       WebViewUtils.headers.forEach((val, key) => {
         headers.put(key, val);
+        if (key.toLowerCase() === "user-agent") {
+          webView.getSettings().setUserAgentString(val);
+        }
       });
       this.headersAddedTo.add(url);
     }
