@@ -29,6 +29,7 @@ export function webViewLoaded(args: observable.EventData) {
 export function webViewLoadStarted(args: any) {
   const wv: WebView = <WebView>args.object;
   console.log(`>>>>>>>> webViewLoadStarted, navigationType for url: ${args.url} = ${args.navigationType}`);
+  // wv.stopLoading();
 }
 
 export function webViewLoadFinished(args: any) {

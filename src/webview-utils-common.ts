@@ -4,7 +4,7 @@ import { Observable } from "tns-core-modules/ui/core/bindable";
 export function onLoadStarted(observable: Observable, url: string, navigationType: NavigationType) {
   let args = <LoadEventData>{
     eventName: "loadStarted",
-    object: this,
+    object: observable,
     url: url,
     navigationType: navigationType,
     error: undefined
