@@ -49,11 +49,12 @@ export class WebViewUtils extends android.webkit.WebViewClient {
   public onPageStarted(webView: any, url: string, favicon: android.graphics.Bitmap): void {
     super.onPageStarted(webView, url, favicon);
     const headersAdded = this.headersAddedTo.has(url);
-    if (url.indexOf("http") === 0 && !headersAdded) {
+    const isHttpRequest = url.indexOf("http") === 0;
+    if (isHttpRequest && !headersAdded) {
       ++this.startEventCount;
       this._view.android.loadUrl(url, this.getAdditionalHeadersForUrl(url));
-    } else if (headersAdded && WebViewUtils.wv && url.indexOf("http") === 0) {
-      if (++this.startEventCount === 2) {
+    } else if (!isHttpRequest || (headersAdded && WebViewUtils.wv)) {
+      if (!isHttpRequest || ++this.startEventCount === 2) {
         onLoadStarted(WebViewUtils.wv, url, undefined);
       }
     }
@@ -61,10 +62,8 @@ export class WebViewUtils extends android.webkit.WebViewClient {
 
   public onPageFinished(view: android.webkit.WebView, url: string) {
     super.onPageFinished(view, url);
-    if (url.indexOf("http") === -1) {
-      return;
-    }
-    if (WebViewUtils.wv && this.startEventCount > 1) {
+    const isHttpRequest = url.indexOf("http") === 0;
+    if (!isHttpRequest || (WebViewUtils.wv && this.startEventCount > 1)) {
       onLoadFinished(WebViewUtils.wv, url, undefined);
     }
   }

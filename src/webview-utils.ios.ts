@@ -26,12 +26,7 @@ class WebviewUtilsWKNavigationDelegateImpl extends NSObject implements WKNavigat
       areHeadersAdded = areHeadersAdded && navigationAction.request.valueForHTTPHeaderField(key) === val;
     });
 
-    if (!isHttpRequest) {
-      decisionHandler(WKNavigationActionPolicy.Allow);
-      return;
-    }
-
-    if (!areHeadersAdded) {
+    if (isHttpRequest && !areHeadersAdded) {
       decisionHandler(WKNavigationActionPolicy.Cancel);
       const customRequest = new NSMutableURLRequest({
         URL: navigationAction.request.URL,

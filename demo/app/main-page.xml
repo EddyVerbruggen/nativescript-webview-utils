@@ -7,6 +7,7 @@
 
       <Label text="And now with custom headers:" class="t-20 text-center c-black" textWrap="true"/>
       <WebView loaded="webViewLoaded" loadStarted="webViewLoadStarted" loadFinished="webViewLoadFinished" height="370" src="https://httpbin.org/headers?wv=2"/>
+      <!--<WebView loaded="webViewLoaded" loadStarted="webViewLoadStarted" loadFinished="webViewLoadFinished" height="370" src="<p>Hi</p>"/>-->
 
     </StackLayout>
   </ScrollView>
