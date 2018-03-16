@@ -34,6 +34,14 @@ class WebviewUtilsWKNavigationDelegateImpl extends NSObject implements WKNavigat
         timeoutInterval: 60
       });
 
+      // add the original headers
+      for (let i = 0; i < navigationAction.request.allHTTPHeaderFields.count; i++) {
+        const headerKey = navigationAction.request.allHTTPHeaderFields.allKeys.objectAtIndex(i);
+        customRequest.setValueForHTTPHeaderField(
+            navigationAction.request.allHTTPHeaderFields.objectForKey(headerKey),
+            headerKey);
+      }
+
       this.headers.forEach((val, key) => {
         customRequest.setValueForHTTPHeaderField(val, key);
         // the user agent is set as header, but also set this property:
@@ -147,6 +155,14 @@ export class WebViewUtils extends NSObject implements UIWebViewDelegate {
       cachePolicy: NSURLRequestCachePolicy.UseProtocolCachePolicy,
       timeoutInterval: 60
     });
+
+    // add the original headers
+    for (let i = 0; i < request.allHTTPHeaderFields.count; i++) {
+      const headerKey = request.allHTTPHeaderFields.allKeys.objectAtIndex(i);
+      nsMutableURLRequest.setValueForHTTPHeaderField(
+          request.allHTTPHeaderFields.objectForKey(headerKey),
+          headerKey);
+    }
 
     WebViewUtils.headers.forEach((val, key) => {
       nsMutableURLRequest.setValueForHTTPHeaderField(val, key);
