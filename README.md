@@ -14,7 +14,7 @@ Add request headers to a NativeScript WebView. Perhaps more utils later.
 [twitter-image]:https://img.shields.io/twitter/follow/eddyverbruggen.svg?style=social&label=Follow%20me
 [twitter-url]:https://twitter.com/eddyverbruggen
 
-> Version 1.2.0 supports NativeScript-iOS 3.4 🎉 which switched from `UIWebView` to `WKWebView`. It's also backward compatible with older versions. You're welcome.
+> Versions 1.2.0 and up supports NativeScript-iOS 3.4 🎉 which switched from `UIWebView` to `WKWebView`. It's also backward compatible with older versions. You're welcome.
 
 <img src="https://raw.githubusercontent.com/EddyVerbruggen/nativescript-webview-utils/master/media/ios-headers.png" width="300px"/>
 
