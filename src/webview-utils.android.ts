@@ -53,8 +53,11 @@ export class WebViewUtils extends android.webkit.WebViewClient {
     if (isHttpRequest && !headersAdded) {
       ++this.startEventCount;
       this._view.android.loadUrl(url, this.getAdditionalHeadersForUrl(url));
+      if (WebViewUtils.wv) {
+        onLoadStarted(WebViewUtils.wv, url, undefined);
+      }
     } else if (!isHttpRequest || (headersAdded && WebViewUtils.wv)) {
-      if (!isHttpRequest || ++this.startEventCount === 2) {
+      if (!isHttpRequest || ++this.startEventCount === 1) {
         onLoadStarted(WebViewUtils.wv, url, undefined);
       }
     }
