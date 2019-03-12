@@ -1,6 +1,6 @@
 {
   "name": "nativescript-webview-utils",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Add custom headers to a NativeScript WebView. Perhaps more utils later.",
   "main": "webview-utils",
   "typings": "index.d.ts",

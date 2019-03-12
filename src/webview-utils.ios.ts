@@ -27,14 +27,14 @@ class WebviewUtilsWKNavigationDelegateImpl extends NSObject implements WKNavigat
     });
 
     if (isHttpRequest && !areHeadersAdded) {
-      if (navigationAction.request.HTTPMethod !== 'GET' || this.headers.length) {
+      if (navigationAction.request.HTTPMethod !== 'GET') {
         decisionHandler(WKNavigationActionPolicy.Allow);
         return;
       }
 
       decisionHandler(WKNavigationActionPolicy.Cancel);
       
-      const customRequest = navigationAction.request;
+      const customRequest = navigationAction.request.mutableCopy();
 
       // add the original headers
       for (let i = 0; i < navigationAction.request.allHTTPHeaderFields.count; i++) {
