@@ -14,7 +14,7 @@
     "build": "npm i && tsc",
     "demo.ios": "npm run preparedemo && cd ../demo && tns run ios --emulator",
     "demo.ios.device": "npm run preparedemo && cd ../demo && tns platform remove ios && tns run ios",
-    "demo.android": "npm run preparedemo && cd ../demo && tns platform remove android && tns run android --justlaunch",
+    "demo.android": "npm run preparedemo && cd ../demo && tns platform remove android && tns run android",
     "test": "npm run tslint && npm run tslint.demo && cd ../demo && tns build ios && tns build android",
     "test.ios": "cd ../demo && tns platform remove ios && tns test ios --emulator",
     "test.ios.device": "cd ../demo && tns platform remove ios && tns test ios",
@@ -49,9 +49,9 @@
   "homepage": "https://github.com/EddyVerbruggen/nativescript-webview-utils",
   "readmeFilename": "README.md",
   "devDependencies": {
-    "tns-core-modules": "~3.4.0",
-    "tns-platform-declarations": "~3.4.0",
-    "typescript": "~2.6.0",
+    "tns-core-modules": "~5.3.1",
+    "tns-platform-declarations": "~5.3.1",
+    "typescript": "~2.8.0",
     "tslint": "^5.0.0"
   },
   "dependencies": {},

@@ -87,7 +87,7 @@ export class WebViewUtils extends android.webkit.WebViewClient {
       let request: any = arguments[1];
       let error: any = arguments[2];
 
-      super.onReceivedError(view, request, error);
+      super.onReceivedError(view, request, error, undefined);
 
       const headersAdded = error.getUrl && this.headersAddedTo.has(error.getUrl());
       if (headersAdded && WebViewUtils.wv) {

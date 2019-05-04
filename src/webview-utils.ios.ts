@@ -11,6 +11,7 @@ class WebviewUtilsWKNavigationDelegateImpl extends NSObject implements WKNavigat
     handler.headers = headers;
     return handler;
   }
+
   private _owner: WeakRef<WebView>;
 
   webViewDecidePolicyForNavigationActionDecisionHandler(webView: WKWebView, navigationAction: WKNavigationAction, decisionHandler: (p1: WKNavigationActionPolicy) => void): void {
@@ -27,13 +28,13 @@ class WebviewUtilsWKNavigationDelegateImpl extends NSObject implements WKNavigat
     });
 
     if (isHttpRequest && !areHeadersAdded) {
-      if (navigationAction.request.HTTPMethod !== 'GET') {
+      if (navigationAction.request.HTTPMethod !== "GET") {
         decisionHandler(WKNavigationActionPolicy.Allow);
         return;
       }
 
       decisionHandler(WKNavigationActionPolicy.Cancel);
-      
+
       const customRequest = navigationAction.request.mutableCopy();
 
       // add the original headers
