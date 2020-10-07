@@ -1,4 +1,4 @@
-import { NavigationType, WebView } from "tns-core-modules/ui/web-view";
+import { WebViewNavigationType, WebView } from "@nativescript/core";
 import { onLoadFinished, onLoadStarted } from "./webview-utils-common";
 
 class WebviewUtilsWKNavigationDelegateImpl extends NSObject implements WKNavigationDelegate {
@@ -57,7 +57,7 @@ class WebviewUtilsWKNavigationDelegateImpl extends NSObject implements WKNavigat
     } else {
       decisionHandler(WKNavigationActionPolicy.Allow);
 
-      let navType: NavigationType = "other";
+      let navType: WebViewNavigationType = "other";
 
       switch (navigationAction.navigationType) {
         case WKNavigationType.LinkActivated:

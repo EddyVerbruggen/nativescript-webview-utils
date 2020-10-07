@@ -1,14 +1,16 @@
 {
     "compilerOptions": {
-        "target": "es5",
-        "module": "commonjs",
+        "target": "es2017",
+        "module": "esnext",
+        "moduleResolution": "node",
         "declaration": true,
         "removeComments": true,
         "noLib": false,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
+        "skipLibCheck": true,
         "lib": [
-            "es6",
+            "es2017",
             "dom"
         ],
         "sourceMap": false,
@@ -26,7 +28,11 @@
             "./node_modules"
         ],
         "types": [
-        ]
+        ],
+        "plugins": [{
+            "transform": "@nativescript/webpack/transformers/ns-transform-native-classes",
+            "type": "raw"
+        }]
     },
     "exclude": [
         "demo",

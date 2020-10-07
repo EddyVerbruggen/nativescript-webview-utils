@@ -1,6 +1,7 @@
-import { WebView } from "tns-core-modules/ui/web-view";
+import { WebView } from "@nativescript/core";
 import { onLoadFinished, onLoadStarted } from "./webview-utils-common";
 
+@NativeClass()
 export class WebViewUtils extends android.webkit.WebViewClient {
   // Note that using a static property limits usage of multiple webviews on one page with different headers,
   // but I don't think that is ever a real usecase for anyone.
