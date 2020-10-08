@@ -1,17 +1,15 @@
-import * as observable from 'tns-core-modules/data/observable';
-import * as pages from 'tns-core-modules/ui/page';
 import { HelloWorldModel } from './main-view-model';
-import { WebView } from 'tns-core-modules/ui/web-view';
-import { WebViewUtils } from 'nativescript-webview-utils';
+import { WebView, Page, EventData } from '@nativescript/core';
+import { WebViewUtils }from 'nativescript-webview-utils';
 
 // Event handler for Page 'loaded' event attached in main-page.xml
-export function pageLoaded(args: observable.EventData) {
+export function pageLoaded(args: EventData) {
   // Get the event sender
-  let page = <pages.Page>args.object;
+  let page = <Page>args.object;
   page.bindingContext = new HelloWorldModel();
 }
 
-export function webViewLoaded(args: observable.EventData) {
+export function webViewLoaded(args: EventData) {
   const wv: WebView = <WebView>args.object;
 
   // as a bonus, hide those ugly Android zoomcontrols
