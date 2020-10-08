@@ -1,6 +1,7 @@
 import { WebViewNavigationType, WebView } from "@nativescript/core";
 import { onLoadFinished, onLoadStarted } from "./webview-utils-common";
 
+@NativeClass()
 class WebviewUtilsWKNavigationDelegateImpl extends NSObject implements WKNavigationDelegate {
   private headers: Map<string, string>;
   public static ObjCProtocols = [WKNavigationDelegate];
@@ -103,6 +104,7 @@ class WebviewUtilsWKNavigationDelegateImpl extends NSObject implements WKNavigat
   }
 }
 
+@NativeClass()
 export class WebViewUtils extends NSObject implements UIWebViewDelegate {
   public static ObjCProtocols = [UIWebViewDelegate];
 
