@@ -1,20 +1,23 @@
 {
+  "scripts": {
+    "ios": "ns debug ios --no-hmr",
+    "android": "ns debug android --no-hmr"
+  },
   "dependencies": {
-    "@nativescript/core": "7.0.10",
-    "@nativescript/theme": "3.0.0",
-    "@nativescript/unit-test-runner": "1.0.0",
-    "@nativescript/webpack": "3.0.7",
+    "@nativescript/core": "~7.0.10",
+    "@nativescript/theme": "~3.0.0",
+    "@nativescript/unit-test-runner": "^1.0.2",
     "nativescript-webview-utils": "file:../src"
   },
   "devDependencies": {
+    "@nativescript/android": "7.0.0",
     "@nativescript/ios": "7.0.1",
     "@nativescript/types": "7.0.4",
+    "@nativescript/webpack": "~3.0.7",
     "@types/jasmine": "3.5.14",
-    "awesome-typescript-loader": "~3.1.3",
     "babel-traverse": "6.12.0",
     "babel-types": "6.11.1",
     "babylon": "6.8.4",
-    "extract-text-webpack-plugin": "~3.0.0",
     "filewalker": "0.1.2",
     "jasmine-core": "~2.8.0",
     "karma": "5.2.3",
@@ -22,10 +25,7 @@
     "karma-nativescript-launcher": "0.4.0",
     "karma-webpack": "3.0.5",
     "lazy": "1.0.11",
-    "nativescript-css-loader": "~0.26.0",
-    "nativescript-dev-typescript": "libs",
-    "typescript": "3.9.7",
-    "uglifyjs-webpack-plugin": "~1.1.6"
+    "typescript": "~4.0.3"
   },
   "main": "app.js"
 }
