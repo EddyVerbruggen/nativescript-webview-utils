@@ -1,6 +1,7 @@
-import { NavigationType, WebView } from "tns-core-modules/ui/web-view";
+import { WebViewNavigationType, WebView } from "@nativescript/core";
 import { onLoadFinished, onLoadStarted } from "./webview-utils-common";
 
+@NativeClass()
 class WebviewUtilsWKNavigationDelegateImpl extends NSObject implements WKNavigationDelegate {
   private headers: Map<string, string>;
   public static ObjCProtocols = [WKNavigationDelegate];
@@ -57,7 +58,7 @@ class WebviewUtilsWKNavigationDelegateImpl extends NSObject implements WKNavigat
     } else {
       decisionHandler(WKNavigationActionPolicy.Allow);
 
-      let navType: NavigationType = "other";
+      let navType: WebViewNavigationType = "other";
 
       switch (navigationAction.navigationType) {
         case WKNavigationType.LinkActivated:
@@ -103,21 +104,17 @@ class WebviewUtilsWKNavigationDelegateImpl extends NSObject implements WKNavigat
   }
 }
 
-export class WebViewUtils extends NSObject implements UIWebViewDelegate {
-  public static ObjCProtocols = [UIWebViewDelegate];
+export class WebViewUtils {
 
   // Note that using a static property limits usage of multiple webviews on one page with different headers,
   // but I don't think that is ever a real usecase for anyone.
-  private static headers: Map<string, string>;
-
-  private _owner: WeakRef<WebView>;
-  private _originalDelegate: any; // UIWebViewDelegateImpl
+  static headers: Map<string, string>;
 
   public static addHeaders(wv: WebView, headers: Map<string, string>) {
     if (WebViewUtils.isWKWebView(wv)) {
-      (<WKWebView>wv.ios).navigationDelegate = (<any>wv)._delegate = WebviewUtilsWKNavigationDelegateImpl.initWithOwnerAndHeaders(new WeakRef(wv), headers);
+      (<WKWebView>wv.nativeViewProtected).navigationDelegate = (<any>wv)._delegate = WebviewUtilsWKNavigationDelegateImpl.initWithOwnerAndHeaders(new WeakRef(wv), headers);
     } else {
-      (<any>wv)._delegate = WebViewUtils.initWithOwner(new WeakRef(wv));
+      (<any>wv)._delegate = WebViewUtilsDelegateImpl.initWithOwner(new WeakRef(wv));
       WebViewUtils.headers = headers;
     }
   }
@@ -128,12 +125,20 @@ export class WebViewUtils extends NSObject implements UIWebViewDelegate {
    * @param {WebView} wv
    * @returns {boolean}
    */
-  private static isWKWebView(wv: WebView): boolean {
-    return wv.ios.isKindOfClass(WKWebView.class());
+  static isWKWebView(wv: WebView): boolean {
+    return wv.nativeViewProtected.isKindOfClass(WKWebView.class());
   }
+}
 
-  private static initWithOwner(owner: WeakRef<WebView>): WebViewUtils {
-    let delegate = new WebViewUtils();
+@NativeClass()
+class WebViewUtilsDelegateImpl extends NSObject implements UIWebViewDelegate {
+  static ObjCProtocols = [UIWebViewDelegate];
+
+  private _owner: WeakRef<WebView>;
+  private _originalDelegate: any; // UIWebViewDelegateImpl
+
+  static initWithOwner(owner: WeakRef<WebView>): WebViewUtilsDelegateImpl {
+    let delegate = <WebViewUtilsDelegateImpl>WebViewUtilsDelegateImpl.new();
     delegate._owner = owner;
     delegate._originalDelegate = (<any>owner.get())._delegate;
     return delegate;

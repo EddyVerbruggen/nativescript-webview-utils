@@ -1,7 +1,6 @@
-import { LoadEventData, NavigationType } from "tns-core-modules/ui/web-view";
-import { Observable } from "tns-core-modules/ui/core/bindable";
+import { LoadEventData, WebViewNavigationType, Observable } from "@nativescript/core";
 
-export function onLoadStarted(observable: Observable, url: string, navigationType: NavigationType) {
+export function onLoadStarted(observable: Observable, url: string, navigationType: WebViewNavigationType) {
   let args = <LoadEventData>{
     eventName: "loadStarted",
     object: observable,

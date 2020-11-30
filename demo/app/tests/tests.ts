@@ -1,4 +1,4 @@
-import { WebView } from "tns-core-modules/ui/web-view";
+import { WebView } from "@nativescript/core";
 import { WebViewUtils } from "nativescript-webview-utils";
 
 describe("addHeaders", () => {
