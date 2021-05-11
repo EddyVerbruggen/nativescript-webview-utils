@@ -29,7 +29,7 @@ class WebviewUtilsWKNavigationDelegateImpl extends NSObject implements WKNavigat
     });
 
     if (isHttpRequest && !areHeadersAdded) {
-      if (navigationAction.request.HTTPMethod !== "GET" || !navigationAction.targetFrame.mainFrame) {
+      if (navigationAction.request.HTTPMethod !== "GET" || (navigationAction.targetFrame && !navigationAction.targetFrame.mainFrame)) {
         decisionHandler(WKNavigationActionPolicy.Allow);
         return;
       }
